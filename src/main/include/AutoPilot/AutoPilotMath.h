@@ -2,6 +2,7 @@
 #define AUTOPILOT_MATH_H
 
 #include "AutoPilot/PathBuilding.h"
+#include <algorithm> 
 #include <math.h>
 
 double Angle2Deriv(double AngleInDegrees);

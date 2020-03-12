@@ -43,9 +43,42 @@ double TimeGivenSFVAJ(SplineFunction TheSplineFunction, double Velocity, double 
    return pow(1/3, (6*ArcLengthDistance(TheSplineFunction)));
 }
 
+template <class type> bool Comp(type a, type b)
+    {
+        return (a.i>b.i);
+    }
+
+
 Spline SplineSort(Spline Spline)
 {
+    struct SplineFunctionCarrier
+    {
+        SplineFunction SplineFunction; int i;
+    };
     
+    std::vector<SplineFunctionCarrier> Carrier;
+    for (int i = 0; i <= Spline.size(); i++)
+    {
+        Carrier[i].SplineFunction = Spline[i];
+        Carrier[i].i = i;
+    }
+
+    for (int i = 0; i <= Spline.size(); i++)
+    {
+        for (int j = 0; j <= Spline.size(); j++)
+        {
+            if (Carrier[i].SplineFunction.PointOne.X < Carrier[j].SplineFunction.PointOne.X)
+            {
+                Carrier[i].i = (j-1);
+            }
+            else 
+            {
+                Carrier[i].i = (j+1);
+            }
+        }
+    }
+
+    std::sort(Carrier.begin(), Carrier.end(), Comp);
 }
 
 
