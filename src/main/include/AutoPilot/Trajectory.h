@@ -3,11 +3,11 @@
 
 #include "AutoPilot/PathBuilding.h"
 
-typedef struct MotionProfile
+typedef struct
 {
     SplineFunction Function;
     double Ax, Bx, C, time;
-};
+} MotionProfile;
 
 MotionProfile GenerateMotionProfile(SplineFunction function, double Velocity, double Acceleration, double Jerk);
 
