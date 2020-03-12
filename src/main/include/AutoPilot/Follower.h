@@ -1,0 +1,4 @@
+#ifndef AUTOPILOT_FOLLOWER_H
+#define AUTOPILOT_FOLLOWER_H
+
+#endif
