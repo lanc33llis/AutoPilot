@@ -1,29 +1,20 @@
 #include "AutoPilot/Trajectory.h"
 
-MotionProfile GenerateMotionProfile(SplineFunction function, double Velocity, double Acceleration, double Jerk)
+Segment GenerateSegment(SplineFunction Function, double Velocity, double Acceleration, double Jerk)
 {
-    double B0, B1, B2, time;
+    double B0, B1, B2, Time;
 
-    /*
+    Time = TimeGivenSFVAJ(Function, Velocity, Acceleration, Jerk);
 
-    v(t) = interval [0, t] a(t)dt=1/2Jmax*t^2
+    B0 = Function.Ax; B1 = Function.Bx; B2 = Function.Cx;
+    return Segment{Function, B0, B1, B2, Time};
+}
 
-    x(t) = interval [0, t] v(t)dt=1/2Jmax*t^3
+Trajectory GenerateTrajectory(Spline Spline)
+{
+    
+    for (int i = 0; i <= Spline.size(); i++)
+    {
 
-    thus
-
-    time for end position is:
-
-    t = (6*end position/Jmax)^1/3
-
-    and time for maximum speed
-
-    t = (2*velocitymax/Jmax)^1/2
-
-    */
-   
-   time = ();
-
-    B0 = function.Ax; B1 = function.Bx; B2 = function.Cx;
-    return MotionProfile{function, B0, B1, B2, time};
+    }
 }
