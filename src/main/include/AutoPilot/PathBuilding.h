@@ -3,18 +3,18 @@
 
 #include <vector>
 
-typedef struct
+struct Waypoint
 {
     double X, Y, Angle;
-} Waypoint;
+};
 
 typedef std::vector<Waypoint> Path;
 
-typedef struct
+struct SplineFunction
 {
     Waypoint PointOne, PointTwo;
     double Ax, Bx, Cx, Dx, S;
-} SplineFunction;
+};
 
 SplineFunction HermiteFinder(Waypoint PointOne, Waypoint PointTwo);
 

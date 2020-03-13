@@ -2,15 +2,17 @@
 
 double Segment::Velocity(double Seconds)
 {
-    //deriv = 3ax^2 + 2bx + c
-    double BaseVelocity = ArcLengthDistance(Function) / Time;
+    //deriv y = 3ax^2 + 2bx + c
+    //deriv x = y-(d/ax^2+bx+c)
+    double YVelocity, XVelocity;
+    double Displacement; 
     if (Seconds > Time)
     {
         return NAN;
     }
     else
     {
-        return (pow(3*Ax * Seconds, 2) + (2*Bx * Seconds) + C);
+        
     }
 }
 

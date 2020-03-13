@@ -18,7 +18,7 @@ double Angle2Deriv(double AngleInDegrees)
 double ArcLengthDistance(SplineFunction TheSplineFunction)
 {   //deriv = 3ax^2 + 2bx + c
     double Ax = 3*TheSplineFunction.Ax, Bx = 2*TheSplineFunction.Bx, C = TheSplineFunction.Cx;
-    return (TheSplineFunction.PointTwo.X - TheSplineFunction.PointOne.X) * (sqrt(1+pow(2, pow(2, Ax) + Bx+ C)));
+    return (TheSplineFunction.PointTwo.X - TheSplineFunction.PointOne.X) * (sqrt(1+pow(pow(Ax, 2) + Bx + C, 2)));
 }
 
 double TimeGivenSFVAJ(SplineFunction TheSplineFunction, double Velocity, double Acceleration, double Jerk)

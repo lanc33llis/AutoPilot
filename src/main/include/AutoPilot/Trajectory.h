@@ -4,12 +4,12 @@
 #include "AutoPilot/PathBuilding.h"
 #include "AutoPilot/AutoPilotMath.h"
 
-typedef struct
+struct Segment
 {
     SplineFunction Function;
     double Velocity(double Seconds); double Acceleration(double Seconds); double Jerk(double Seconds); 
     double Ax, Bx, C, Time;
-} Segment;
+};
 
 Segment GenerateSegment(SplineFunction function, double Velocity, double Acceleration, double Jerk);
 
