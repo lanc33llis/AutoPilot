@@ -8,6 +8,8 @@ typedef struct
     double X, Y, Angle;
 } Waypoint;
 
+typedef std::vector<Waypoint> Path;
+
 typedef struct
 {
     Waypoint PointOne, PointTwo;
@@ -17,5 +19,7 @@ typedef struct
 SplineFunction HermiteFinder(Waypoint PointOne, Waypoint PointTwo);
 
 typedef std::vector<SplineFunction> Spline; 
+
+Spline SplineGeneration(Path ThePath);
 
 #endif

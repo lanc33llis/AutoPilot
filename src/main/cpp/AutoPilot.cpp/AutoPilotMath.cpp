@@ -6,7 +6,7 @@ double Angle2Deriv(double AngleInDegrees)
     double a = AngleInDegrees;
     if (a == 90 || a == 270)
     {
-        return -1;
+        return NAN;
     }
     else
     {
@@ -14,6 +14,7 @@ double Angle2Deriv(double AngleInDegrees)
     }
 }
 
+//uses arc length formula to find distance
 double ArcLengthDistance(SplineFunction TheSplineFunction)
 {   //deriv = 3ax^2 + 2bx + c
     double Ax = 3*TheSplineFunction.Ax, Bx = 2*TheSplineFunction.Bx, C = TheSplineFunction.Cx;
@@ -43,42 +44,5 @@ double TimeGivenSFVAJ(SplineFunction TheSplineFunction, double Velocity, double 
    return pow(1/3, (6*ArcLengthDistance(TheSplineFunction)));
 }
 
-template <class type> bool Comp(type a, type b)
-    {
-        return (a.i>b.i);
-    }
-
-
-Spline SplineSort(Spline Spline)
-{
-    struct SplineFunctionCarrier
-    {
-        SplineFunction SplineFunction; int i;
-    };
-    
-    std::vector<SplineFunctionCarrier> Carrier;
-    for (int i = 0; i <= Spline.size(); i++)
-    {
-        Carrier[i].SplineFunction = Spline[i];
-        Carrier[i].i = i;
-    }
-
-    for (int i = 0; i <= Spline.size(); i++)
-    {
-        for (int j = 0; j <= Spline.size(); j++)
-        {
-            if (Carrier[i].SplineFunction.PointOne.X < Carrier[j].SplineFunction.PointOne.X)
-            {
-                Carrier[i].i = (j-1);
-            }
-            else 
-            {
-                Carrier[i].i = (j+1);
-            }
-        }
-    }
-
-    std::sort(Carrier.begin(), Carrier.end(), Comp);
-}
 
 
