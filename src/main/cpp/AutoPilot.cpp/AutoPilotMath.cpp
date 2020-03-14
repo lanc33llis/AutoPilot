@@ -1,5 +1,5 @@
 #include "AutoPilot/AutoPilotMath.h"
-#include "AutoPilot/Hermite/hermite_cubic.hpp"
+#include "AutoPilot/Hermite/hermite_cubic.h"
 
 double Angle2Deriv(double AngleInDegrees)
 {
@@ -21,7 +21,7 @@ double ArcLengthDistance(SplineFunction TheSplineFunction)
     return (TheSplineFunction.PointTwo.X - TheSplineFunction.PointOne.X) * (sqrt(1+pow(pow(Ax, 2) + Bx + C, 2)));
 }
 
-double TimeGivenSFVAJ(SplineFunction TheSplineFunction, double Velocity, double Acceleration, double Jerk)
+double TimeGivenSFJ(SplineFunction TheSplineFunction, double Jerk)
 {
     /*
 
@@ -41,7 +41,7 @@ double TimeGivenSFVAJ(SplineFunction TheSplineFunction, double Velocity, double 
 
     */
 
-   return pow(1/3, (6*ArcLengthDistance(TheSplineFunction)));
+   return pow(1/3, (6*ArcLengthDistance(TheSplineFunction) / Jerk));
 }
 
 

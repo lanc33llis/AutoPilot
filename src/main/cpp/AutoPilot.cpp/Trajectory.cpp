@@ -47,7 +47,7 @@ Segment GenerateSegment(SplineFunction Function, double Velocity, double Acceler
 {
     double B0, B1, B2, Time;
 
-    Time = TimeGivenSFVAJ(Function, Velocity, Acceleration, Jerk);
+    Time = TimeGivenSFJ(Function, Jerk);
 
     B0 = Function.Ax; B1 = Function.Bx; B2 = Function.Cx;
     return Segment{Function, B0, B1, B2, Time};

@@ -8,7 +8,7 @@
 
 using namespace std;
 
-#include "AutoPilot/Hermite/hermite_cubic.hpp"
+#include "AutoPilot/Hermite/hermite_cubic.h"
 
 //****************************************************************************80
 

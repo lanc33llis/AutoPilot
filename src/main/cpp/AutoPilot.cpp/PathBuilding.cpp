@@ -1,6 +1,6 @@
 #include "AutoPilot/PathBuilding.h"
 #include "AutoPilot/AutoPilotMath.h"
-#include "AutoPilot/Hermite/hermite_cubic.hpp"
+#include "AutoPilot/Hermite/hermite_cubic.h"
 
 
 SplineFunction HermiteFinder(Waypoint PointOne, Waypoint PointTwo)
