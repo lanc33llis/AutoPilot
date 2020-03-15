@@ -39,7 +39,7 @@ void Robot::RobotPeriodic() {}
  * make sure to add them to the chooser code above as well.
  */
 void Robot::AutonomousInit() {
-  AP::Trajectory MyTrajectory = AP::GenerateTrajectory(AP::SplineGeneration(MyPath), 2.0);
+  AP::Trajectory MyTrajectory = AP::GenerateTrajectory(AP::GenerateSpline(MyPath), 2.0);
 }
 
 void Robot::AutonomousPeriodic() {

@@ -22,6 +22,6 @@ SplineFunction HermiteFinder(Waypoint PointOne, Waypoint PointTwo);
 
 typedef std::vector<SplineFunction> Spline; 
 
-Spline SplineGeneration(Path ThePath);
+Spline GenerateSpline(Path ThePath);
 }
 #endif

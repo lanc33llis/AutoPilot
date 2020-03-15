@@ -2,12 +2,12 @@
 #include <iostream>
 
 
-AutoPilot::AutoPilot(double Jerk)
+AP::AutoPilot::AutoPilot(double Jerk)
 {
     MaxJerk = Jerk;
 }
 
-AutoPilot::~AutoPilot()
+AP::AutoPilot::~AutoPilot()
 {
 
 }

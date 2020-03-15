@@ -11,7 +11,7 @@ SplineFunction HermiteFinder(Waypoint PointOne, Waypoint PointTwo)
     return SplineFunction{PointOne, PointTwo, *A0, *A1, *A2, *A3};
 }
 
-Spline SplineGeneration(Path ThePath)
+Spline GenerateSpline(Path ThePath)
 {
     Spline ReturnSpline;
     int NumberOfFunctions = ThePath.size() - 2;

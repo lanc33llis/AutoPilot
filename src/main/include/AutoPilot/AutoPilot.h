@@ -5,6 +5,8 @@
 #include "PathBuilding.h"
 #include "Trajectory.h"
 #include "Follower.h"
+namespace AP
+{
 
 class AutoPilot
 {
@@ -14,4 +16,5 @@ class AutoPilot
     ~AutoPilot();
 };
 
+}
 #endif
