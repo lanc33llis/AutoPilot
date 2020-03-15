@@ -2,6 +2,7 @@
 #include "AutoPilot/AutoPilotMath.h"
 #include "AutoPilot/Hermite/hermite_cubic.h"
 
+namespace AP{
 
 SplineFunction HermiteFinder(Waypoint PointOne, Waypoint PointTwo)
 {
@@ -12,14 +13,14 @@ SplineFunction HermiteFinder(Waypoint PointOne, Waypoint PointTwo)
 
 Spline SplineGeneration(Path ThePath)
 {
-    bool IsEven;
-    if ((ThePath.size() % 2) != 0)
+    Spline ReturnSpline;
+    int NumberOfFunctions = ThePath.size() - 2;
+    for (int i = 0; i <= NumberOfFunctions; i++)
     {
-        IsEven = false;
+        SplineFunction Temp = HermiteFinder(ThePath[i], ThePath[i + 1]);
+        ReturnSpline.push_back(Temp);
     }
-    else
-    {
-        IsEven = true;
-    }
-    
+    return ReturnSpline;
+}
+
 }

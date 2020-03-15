@@ -1,6 +1,8 @@
 #include "AutoPilot/AutoPilotMath.h"
 #include "AutoPilot/Hermite/hermite_cubic.h"
 
+namespace AP{
+
 double Angle2Deriv(double AngleInDegrees)
 {
     double a = AngleInDegrees;
@@ -44,5 +46,6 @@ double TimeGivenSFJ(SplineFunction TheSplineFunction, double Jerk)
    return pow(1/3, (6*ArcLengthDistance(TheSplineFunction) / Jerk));
 }
 
+}
 
 

@@ -2,9 +2,9 @@
 #include <iostream>
 
 
-AutoPilot::AutoPilot()
+AutoPilot::AutoPilot(double Jerk)
 {
-
+    MaxJerk = Jerk;
 }
 
 AutoPilot::~AutoPilot()

@@ -8,9 +8,9 @@
 
 class AutoPilot
 {
-    private:
-    double MaxVelocity, MaxAcceleration, Jerk;
-    AutoPilot();
+    public:
+    double MaxJerk;
+    AutoPilot(double Jerk);
     ~AutoPilot();
 };
 
