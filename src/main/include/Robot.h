@@ -28,7 +28,7 @@ class Robot : public frc::TimedRobot {
   const std::string kAutoNameDefault = "Default";
   const std::string kAutoNameCustom = "My Auto";
   std::string m_autoSelected;
-  AutoPilot AP{2};
+  AP::AutoPilot AP{2};
   AP::Waypoint point1{0, 0, 0};
   AP::Waypoint point2{2, 3, 60};
   AP::Waypoint point3{4, 5, 0};
