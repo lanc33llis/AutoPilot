@@ -1,0 +1,216 @@
+// AutoPilotSelfDev.cpp : This file contains the 'main' function. Program execution begins and ends there.
+//
+
+#include <iostream>
+#include "Header.h"
+
+void hermite_cubic_to_power_cubic(double x1, double f1, double d1, double x2,
+	double f2, double d2, double &c0, double &c1, double &c2, double &c3)
+
+	//****************************************************************************80
+	//
+	//  Purpose:
+	//
+	//    HERMITE_CUBIC_TO_POWER_CUBIC converts a Hermite cubic to power form.
+	//
+	//  Licensing:
+	//
+	//    This code is distributed under the GNU LGPL license.
+	//
+	//  Modified:
+	//
+	//    13 February 2011
+	//
+	//  Author:
+	//
+	//    John Burkardt
+	//
+	//  Reference:
+	//
+	//    Fred Fritsch, Ralph Carlson,
+	//    Monotone Piecewise Cubic Interpolation,
+	//    SIAM Journal on Numerical Analysis,
+	//    Volume 17, Number 2, April 1980, pages 238-246.
+	//
+	//  Parameters:
+	//
+	//    Input, double X1, F1, D1, the left endpoint, function value
+	//    and derivative.
+	//
+	//    Input, double X2, F2, D2, the right endpoint, function value
+	//    and derivative.
+	//
+	//    Output, double *C0, *C1, *C2, *C3, the power form of the polynomial.
+	//
+{
+	double df;
+	double h;
+
+	h = x2 - x1;
+	df = (f2 - f1) / h;
+	//
+	//  Polynomial in terms of X - X1:
+	//
+	c0 = f1;
+	c1 = d1;
+	c2 = -(2.0 * d1 - 3.0 * df + d2) / h;
+	c3 = (d1 - 2.0 * df + d2) / h / h;
+	//
+	//  Shift polynomial to X.
+	//
+	c2 = c2 - x1 * c3;
+	c1 = c1 - x1 * c2;
+	c0 = c0 - x1 * c1;
+	c2 = c2 - x1 * c3;
+	c1 = c1 - x1 * c2;
+	c2 = c2 - x1 * c3;
+	std::cout << "Howdy 1" << std::endl;
+	return;
+}
+
+namespace AP{
+
+double Angle2Deriv(double AngleInDegrees)
+{
+    double a = AngleInDegrees;
+    if (a == 90 || a == 270)
+    {
+        return NAN;
+    }
+    else
+    {
+        return tan(a);
+    }
+}
+
+//uses arc length formula to find distance
+double ArcLengthDistance(SplineFunction TheSplineFunction)
+{   //deriv = 3ax^2 + 2bx + c
+    double Ax = 3*TheSplineFunction.Ax, Bx = 2*TheSplineFunction.Bx, C = TheSplineFunction.Cx;
+    return (TheSplineFunction.PointTwo.X - TheSplineFunction.PointOne.X) * (sqrt(1+pow(pow(Ax, 2) + Bx + C, 2)));
+}
+
+double TimeGivenSFJ(SplineFunction TheSplineFunction, double Jerk)
+{
+    /*
+
+    v(t) = interval [0, t] a(t)dt=1/2Jmax*t^2
+
+    x(t) = interval [0, t] v(t)dt=1/2Jmax*t^3
+
+    thus
+
+    time for end position is:
+
+    t = (6*end position/Jmax)^1/3
+
+    and time for maximum speed
+
+    t = (2*velocitymax/Jmax)^1/2
+
+    */
+   double i = ArcLengthDistance(TheSplineFunction);
+   return pow((6*ArcLengthDistance(TheSplineFunction) / Jerk), 1/3);
+}
+
+SplineFunction HermiteFinder(Waypoint PointOne, Waypoint PointTwo)
+{
+	double A0 = 0, A1 = 0, A2 = 0, A3 = 0;
+	std::cout << "Howdy" << std::endl;
+	hermite_cubic_to_power_cubic(PointOne.X, PointOne.Y, Angle2Deriv(PointOne.Angle), PointTwo.X, PointTwo.Y, Angle2Deriv(PointTwo.Angle), A0, A1, A2, A3);
+	std::cout << "Howdy 2" << std::endl;
+	return SplineFunction{ PointOne, PointTwo, A0, A1, A2, A3 };
+}
+
+Spline GenerateSpline(Path ThePath)
+{
+	Spline ReturnSpline;
+	int NumberOfFunctions = ThePath.size() - 1;
+	for (int i = 0; i < NumberOfFunctions; i++)
+	{
+		SplineFunction Temp = HermiteFinder(ThePath[i], ThePath[i + 1]);
+		ReturnSpline.push_back(Temp);
+	}
+	return ReturnSpline;
+}
+
+double Segment::Velocity(double Seconds)
+{
+	//deriv 3ax^2 + 2bx + c
+	if (Seconds > Time)
+	{
+		return NAN;
+	}
+	else
+	{
+		double Xa = XFunction.Ax, Xb = XFunction.Bx, Xc = XFunction.Cx;
+		double Ya = YFunction.Ax, Yb = YFunction.Bx, Yc = YFunction.Cx;
+		return (sqrt(((3 * Xa * pow(Seconds, 2)) + (2 * Xb) + Xc) + ((3 * Ya * pow(Seconds, 2)) + (2 * Yb) + Yc)));
+	}
+}
+
+double Segment::Acceleration(double Seconds)
+{
+	//deriv 6ax + 2b
+	if (Seconds > Time)
+	{
+		return NAN;
+	}
+	else
+	{
+		double Xa = XFunction.Ax, Xb = XFunction.Bx;
+		double Ya = YFunction.Ax, Yb = YFunction.Cx;
+		return sqrt(pow((6 * Xa * Seconds + 2 * Xb), 2) + pow((6 * Ya * Seconds + 2 * Yb), 2));
+	}
+}
+
+double Segment::Jerk(double Seconds)
+{
+	//deriv 6ax
+	if (Seconds > Time)
+	{
+		return NAN;
+	}
+	else
+	{
+		double Xa = XFunction.Ax;
+		double Ya = YFunction.Ax;
+		return sqrt(pow(6 * Xa*Seconds, 2) + pow(6 * Ya*Seconds, 2));
+	}
+}
+
+//Generates a segment.
+Segment GenerateSegment(SplineFunction Function, double Jerk)
+{
+	double B0, B1, B2, Time;
+
+	Time = TimeGivenSFJ(Function, Jerk);
+	SplineFunction XFunction = HermiteFinder(Waypoint{ 0, 0, Function.PointOne.Angle }, Waypoint{ Time, Function.PointTwo.X - Function.PointOne.X, Function.PointTwo.Angle });
+	SplineFunction YFunction = HermiteFinder(Waypoint{ 0, 0, Function.PointOne.Angle }, Waypoint{ Time, Function.PointTwo.Y - Function.PointOne.Y, Function.PointTwo.Angle });
+	B0 = Function.Ax; B1 = Function.Bx; B2 = Function.Cx;
+	return Segment{ Function, XFunction, YFunction, B0, B1, B2, Time };
+}
+
+Trajectory GenerateTrajectory(Spline Spline, double Jerk)
+{
+	Trajectory ReturnTrajectory;
+	for (int i = 0; i < Spline.size(); i++)
+	{
+		Segment Temp = GenerateSegment(Spline[i], Jerk);
+		ReturnTrajectory.push_back(Temp);
+	}
+	return ReturnTrajectory;
+}
+
+
+}
+
+int main()
+{
+	AP::Trajectory MyTrajectory = AP::GenerateTrajectory(AP::GenerateSpline(MyPath), 2.0);
+	for (float i = 0.0; i <= 2.0;)
+	{
+		std::cout << MyTrajectory[0].Velocity(i) << std::endl;
+		i = (i + .1);
+	}
+}
