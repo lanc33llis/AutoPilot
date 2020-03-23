@@ -3,25 +3,25 @@
 
 #include <vector>
 
-namespace AP{
-
-struct Waypoint
+namespace AP
 {
-    double X, Y, Angle;
-};
+    struct Waypoint
+	{
+		double X, Y, Angle;
+	};
 
-typedef std::vector<Waypoint> Path;
+	typedef std::vector<Waypoint> Path;
 
-struct SplineFunction
-{
-    Waypoint PointOne, PointTwo;
-    double Ax, Bx, Cx, Dx;
-};
+	struct SplineFunction
+	{
+		Waypoint PointOne, PointTwo;
+		double Ax, Bx, Cx, Dx;
+	};
 
-SplineFunction HermiteFinder(Waypoint PointOne, Waypoint PointTwo);
+	typedef std::vector<SplineFunction> Spline;
 
-typedef std::vector<SplineFunction> Spline; 
+    SplineFunction HermiteFinder(Waypoint PointOne, Waypoint PointTwo);
 
-Spline GenerateSpline(Path ThePath);
+    Spline GenerateSpline(Path ThePath);
 }
 #endif

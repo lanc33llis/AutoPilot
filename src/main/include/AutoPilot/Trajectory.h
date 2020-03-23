@@ -6,20 +6,18 @@
 
 namespace AP {
 
-double CubicFunction(double X);
+	struct Segment
+	{
+		SplineFunction Function, XFunction, YFunction;
+		double Velocity(double Seconds); double Acceleration(double Seconds); double Jerk(double Seconds);
+		double Ax, Bx, C, Time;
+	};
 
-struct Segment
-{
-    SplineFunction Function, XFunction, YFunction;
-    double Velocity(double Seconds); double Acceleration(double Seconds); double Jerk(double Seconds); 
-    double Ax, Bx, C, Time;
-};
+    Segment GenerateSegment(SplineFunction function, double Jerk);
 
-Segment GenerateSegment(SplineFunction function, double Jerk);
+    typedef std::vector<Segment> Trajectory;
 
-typedef std::vector<Segment> Trajectory;
-
-Trajectory GenerateTrajectory(Spline Spline, double Jerk);
+    Trajectory GenerateTrajectory(Spline Spline, double Jerk);
 
 }
 #endif

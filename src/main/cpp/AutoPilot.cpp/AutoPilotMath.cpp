@@ -3,49 +3,51 @@
 
 namespace AP{
 
-double Angle2Deriv(double AngleInDegrees)
-{
-    double a = AngleInDegrees;
-    if (a == 90 || a == 270)
-    {
-        return NAN;
-    }
-    else
-    {
-        return tan(a);
-    }
-}
+	//Tangent basically 
+	double Angle2Deriv(double AngleInDegrees)
+	{
+		double a = AngleInDegrees;
+		if (a == 90 || a == 270)
+		{
+			return NAN;
+		}
+		else
+		{
+			return tan(a);
+		}
+	}
 
-//uses arc length formula to find distance
-double ArcLengthDistance(SplineFunction TheSplineFunction)
-{   //deriv = 3ax^2 + 2bx + c
-    double Ax = 3*TheSplineFunction.Ax, Bx = 2*TheSplineFunction.Bx, C = TheSplineFunction.Cx;
-    return (TheSplineFunction.PointTwo.X - TheSplineFunction.PointOne.X) * (sqrt(1+pow(pow(Ax, 2) + Bx + C, 2)));
-}
+	//uses arc length formula to find distance
+	double ArcLengthDistance(SplineFunction TheSplineFunction)
+	{   //deriv = 3ax^2 + 2bx + c
+		double Ax = 3 * TheSplineFunction.Ax, Bx = 2 * TheSplineFunction.Bx, C = TheSplineFunction.Cx;
+		return (TheSplineFunction.PointTwo.X - TheSplineFunction.PointOne.X) * (sqrt(1 + pow(pow(Ax, 2) + Bx + C, 2)));
+	}
 
-double TimeGivenSFJ(SplineFunction TheSplineFunction, double Jerk)
-{
-    /*
+	//Time given Spline Function and Jerk
+	double TimeGivenSFJ(SplineFunction TheSplineFunction, double Jerk)
+	{
+		/*
 
-    v(t) = interval [0, t] a(t)dt=1/2Jmax*t^2
+		v(t) = interval [0, t] a(t)dt=1/2Jmax*t^2
 
-    x(t) = interval [0, t] v(t)dt=1/2Jmax*t^3
+		x(t) = interval [0, t] v(t)dt=1/2Jmax*t^3
 
-    thus
+		thus
 
-    time for end position is:
+		time for end position is:
 
-    t = (6*end position/Jmax)^1/3
+		t = (6*end position/Jmax)^1/3
 
-    and time for maximum speed
+		and time for maximum speed
 
-    t = (2*velocitymax/Jmax)^1/2
+		t = (2*velocitymax/Jmax)^1/2
 
-    */
+		*/
 
-   return pow(1/3, (6*ArcLengthDistance(TheSplineFunction) / Jerk));
-}
-
+		double i = ArcLengthDistance(TheSplineFunction);
+		return cbrt(6 * ArcLengthDistance(TheSplineFunction) / Jerk);
+	}
 }
 
 
